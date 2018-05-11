@@ -1,0 +1,20 @@
+php:
+  container_name: quiz-php
+  build: ./.docker/site
+  ports:
+    - "8080:80"
+  volumes:
+    - .:/var/www/quiz
+    - ./.docker/site/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+  links:
+    - mysql
+mysql:
+  container_name: quiz-mysql
+  image: mysql:5.7
+  ports:
+    - "33060:3306"
+  volumes:
+    - /var/lib/mysql
+  environment:
+    - MYSQL_ROOT_PASSWORD=root
+    - MYSQL_DATABASE=quiz
