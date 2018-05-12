@@ -17,6 +17,7 @@ class CreateAnswersTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('series_id');
             $table->unsignedInteger('question_id');
+            $table->integer('weight');
             $table->text('answer');
             $table->timestamps();
 

@@ -12,8 +12,10 @@
 */
 
 Route::get('/', function () {
+    session()->flush();
     return view('home');
 })->name('home');
 
-Route::get('/question/{id}', 'QuestionController@show')->name('question.show');
+Route::get('/question', 'QuestionController@show')->name('question.show');
+Route::post('/question', 'QuestionController@save')->name('question.answer');
 Route::get('/result', 'ResultController@index')->name('result');

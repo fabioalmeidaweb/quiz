@@ -10,7 +10,7 @@
                 <hr class="my-4">
                 <p>Responda as questões e descubra qual série representa você. Não se preocupe, levará poucos minutos!</p>
                 <p class="lead">
-                    <a class="btn btn-primary btn-lg" href="{{ route('question.show', ['id' => 1]) }}" role="button">Começar</a>
+                    <a class="btn btn-primary btn-lg" href="{{ route('question.show') }}" role="button">Começar</a>
                 </p>
             </div>
         </div>

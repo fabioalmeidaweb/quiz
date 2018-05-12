@@ -10,41 +10,38 @@ class QuestionController extends Controller
 {
     protected $question;
     protected $answer;
+    protected $request;
 
-
-    /**
-     * QuestionController constructor.
-     * @param Question $question
-     * @param Answer $answer
-     */
-    public function __construct(Question $question, Answer $answer)
+    public function __construct(Question $question, Answer $answer, Request $request)
     {
         $this->question = $question;
         $this->answer = $answer;
+        $this->request = $request;
     }
 
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function show()
     {
-        return view('welcome');
+        $id = $this->request->session()->get('current_question', 1);
+        $question = $this->question->with('answers')->find($id);
+
+        if (!$question) {
+            return redirect(route('result'));
+        }
+
+        return view('question.show', ['question' => $question]);
+
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function save()
     {
-        $currentQuestion = $this->question->findOrFail($id);
+        $answerId = $this->request->answer;
+        $questionId = $this->request->session()->pull('current_question', 1);
+        $this->request->session()->put("answer_question_{$questionId}", $answerId);
 
-        return view('question.show', ['question' => $currentQuestion]);
+        $nextQuestion = $this->question->where('id', '>', $questionId)->first();
+        $this->request->session()->put('current_question', $nextQuestion->id ?? null);
+
+        return redirect(route('question.show'));
     }
 
 }
